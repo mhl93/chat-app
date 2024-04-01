@@ -2,22 +2,39 @@
 
 ## Functional Requirements
 
+### Current implementation
 1. Direct Message Between Two Users
+- User can post, view, edit, delete message
 2. Group Message Between Multiple Users
+- User can create group
+- Any user in the group can add/delete users
+- The creator of the group can delete the group
+- Message sent will be broadcasted to the group
 3. Read Receipts of Message
+- When all read has been sent, with expectation of client acknowledment, a read receipt will be sent to the sender
 4. Notification Services
+- User can opt in for email notification and/or push notification or no notifications
+- Sending notifs based on the user's preference
+
+### Backlogs
+1. Allow both users to delete the group if it is direct message between two
+2. Limit role who can add or remove member in group
+3. Push notification implementation
+4. Change DB to mySQL and websocket to redis
+
 
 ## System Architecture
 
 The chat-app architecture is designed to be modular, consisting of three primary applications: User, Chat, and Notification.
 The high level system architecture can be assessed [here](https://drive.google.com/file/d/1JD5qYY9sKX5Qhis-tKO6fOFTzKBu5Vy7/view?usp=drive_link)
 
-###
-Framework: Django 5
-Language: Python 3.10
-Database: RDB, Redis
+### Techstack
+- Framework: Django 5
+- Language: Python 3.10
+- Database: RDB(SQLite for testing), Redis
+- Websocket: Django Channels with In Memory
 
-###Applications
+### Applications
 #### User Application
 
 The User Application is responsible for managing user-related functionalities, including:
