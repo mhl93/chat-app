@@ -1,31 +1,38 @@
 # chat-app
 
-This app is formed
+## Functional Requirements
 
-Functional Requirements:
+1. Direct Message Between Two Users
+2. Group Message Between Multiple Users
+3. Read Receipts of Message
+4. Notification Services
 
-- User can create
+## System Architecture
 
-## Three applications
+The chat-app architecture is designed to be modular, consisting of three primary applications: User, Chat, and Notification.
 
-### User
+### User Application
 
-- Handles user authentication
-- Handles user profile
+The User Application is responsible for managing user-related functionalities, including:
 
-### Chat App
+User Authentication: Manages user login and ensures secure access through token-based authentication. Utilizes Django's built-in authentication system enhanced with Django Rest Framework's token authentication to secure API endpoints.
+User Profile Management: Allows users to view and edit their profile information. Profile data includes username, email, and notification preferences
 
-- Get list of messages
-- Post messages
-- Delete messages
-- Change the status if read
-- Notify users for new message
+### Chat Application
 
-## User preference
+The core of the chat functionality, the Chat Application handles message exchanges and chat room management:
 
-- Knowing current notification method
-- Can opt in and opt out for email notification and push notification
+Message Retrieval and Posting: Supports fetching historical messages from a specific channel (direct or group) and posting new messages to it. Utilizes Django Channels to handle WebSockets for real-time bi-directional communication.
+Broadcast Mechanism: Ensures that new messages are promptly broadcasted to all relevant users within a channel, leveraging Django Channels' group layer functionality for efficient message distribution.
+Read Receipts: Tracks the read status of messages to provide read receipts, allowing users to see when their messages have been seen by the recipient(s).
 
-## Relay
+### Notification Application
 
-- Posted message will be broadcasted to correct users
+Email Notifications: Sends email notifications for important events like new messages or mentions within chats. Built on Django's email backend, it allows for easy integration with SMTP services for email delivery.
+Push Notifications (Work In Progress): Aimed at extending the notification system to include real-time push notifications to user devices for immediate alerts. Planned implementation using services like Firebase Cloud Messaging (FCM) for broad compatibility with Android and iOS devices.
+
+### High-Level Data Flow
+
+User Registration and Authentication: Users receives a token for subsequent API requests.
+Message Exchange: Authenticated users send and receive messages through the Chat Application. Messages are stored in a relational database and distributed in real-time via WebSockets.
+Notifications: Upon receiving a new message, the Notification Application triggers an email alert to the user(s) if they're not currently online. Push notifications are planned for immediate alerts regardless of the user's current state.
