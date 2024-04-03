@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  # db:
+  #   image: postgres:13
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_DB=your_db_name
+  #     - POSTGRES_USER=your_db_user
+  #     - POSTGRES_PASSWORD=your_db_password
+  #   ports:
+  #     - "5432:5432"
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+  backend:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./src:/usr/src/app
+    ports:
+      - "8000:8000"
+    # environment:
+    #   - DATABASE_URL=postgres://your_db_user:your_db_password@db:5432/your_db_name
+    depends_on:
+      # - db
+      - redis
+# volumes:
+#   postgres_data:

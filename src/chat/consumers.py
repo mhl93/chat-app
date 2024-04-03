@@ -11,7 +11,7 @@ import redis
 from asgiref.sync import sync_to_async
 
 User = get_user_model()
-redis_conn = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
+redis_conn = redis.Redis(host="redis", port=6379, db=0, decode_responses=True)
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
