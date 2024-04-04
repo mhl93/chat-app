@@ -121,7 +121,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if not await self.is_message_unread_by_others(msg_id):
                 await self.mark_message_as_read_in_db(msg_id)
                 await self.notify_message_read_by_all(msg_id)
-            await sync_to_async(redis_conn.srem)(key, msg_id)
 
     async def save_unread_message_to_redis(self, message_obj):
         """
@@ -286,16 +285,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     message_received=message_obj.content,
                     message_sender=self.user,
                 )
-
-    @database_sync_to_async
-    def mark_message_as_read(self, message_id):
-        """
-        Marks a message as read by the current user in the database.
-
-        :param message_id: The ID of the message to mark as read.
-        """
-
-        message = Message.objects.get(id=message_id)
-        if message:
-            message.is_read = True
-            message.save()
